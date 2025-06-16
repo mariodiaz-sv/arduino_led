@@ -18,7 +18,9 @@ WORKDIR /app
 # Copiar todo el código del proyecto al contenedor
 COPY . /app
 
-# Instalar dependencias PHP con Composer
+# Cambiar directorio a backend para instalar dependencias con Composer
+WORKDIR /app/backend
+
 RUN composer install --no-dev --optimize-autoloader
 
 # Exponer puerto 8080 (o el que uses)
