@@ -30,4 +30,4 @@ EXPOSE 8080
 ENV PORT 8080
 
 # Comando para iniciar el servidor WebSocket PHP
-CMD ["php", "server.php"]
+CMD ["php", "public/ws-server.php"]
