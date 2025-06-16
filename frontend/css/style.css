@@ -1,0 +1,7 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+}
+
+#led-status {
+  font-size: 1.2rem;
+}

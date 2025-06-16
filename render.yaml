@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: sistema-backend-php
+    env: php
+    plan: free
+    buildCommand: ''
+    startCommand: 'php -S 0.0.0.0:$PORT -t public'
+    envVars:
+      - key: PORT
+        value: '10000'

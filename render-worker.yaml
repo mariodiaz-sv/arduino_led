@@ -1,0 +1,7 @@
+services:
+  - type: worker
+    name: sistema-websocket-worker
+    env: php
+    plan: free
+    buildCommand: ''
+    startCommand: 'php public/ws-server.php'
