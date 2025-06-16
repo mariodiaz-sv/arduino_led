@@ -3,7 +3,7 @@ services:
     name: backend-php
     env: php
     plan: free
-    buildCommand: ''
+    buildCommand: 'composer install'
     startCommand: 'php -S 0.0.0.0:$PORT -t backend/public'
 
   - type: static
