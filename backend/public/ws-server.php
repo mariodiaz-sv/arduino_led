@@ -68,7 +68,8 @@ use Ratchet\Server\IoServer;
 use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;
 
-$port = 8080; // puerto WebSocket
+
+$port = getenv('PORT') ?: 8080; // puerto WebSocket
 
 $server = IoServer::factory(
   new HttpServer(
@@ -79,5 +80,6 @@ $server = IoServer::factory(
   $port
 );
 
-echo "Servidor WebSocket corriendo en ws://localhost:$port\n";
+$host = getenv('RENDER') ? '0.0.0.0' : 'localhost';
+echo "Servidor WebSocket corriendo en ws://$host:$port\n";
 $server->run();
