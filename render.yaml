@@ -3,7 +3,7 @@ services:
     name: backend-php
     env: php
     plan: free
-    buildCommand: 'composer install'
+    buildCommand: 'composer install --working-dir=backend'
     startCommand: 'php -S 0.0.0.0:$PORT -t backend/public'
 
   - type: static
@@ -16,5 +16,5 @@ services:
     name: websocket-server
     env: php
     plan: free
-    buildCommand: ''
+    buildCommand: 'composer install --working-dir=backend'
     startCommand: 'php backend/public/ws-server.php'
