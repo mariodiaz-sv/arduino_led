@@ -1,10 +1,20 @@
 services:
   - type: web
-    name: sistema-backend-php
+    name: backend-php
     env: php
     plan: free
     buildCommand: ''
-    startCommand: 'php -S 0.0.0.0:$PORT -t public'
-    envVars:
-      - key: PORT
-        value: '10000'
+    startCommand: 'php -S 0.0.0.0:$PORT -t backend/public'
+
+  - type: static
+    name: frontend-static
+    plan: free
+    buildCommand: ''
+    staticPublishPath: frontend
+
+  - type: web
+    name: websocket-server
+    env: php
+    plan: free
+    buildCommand: ''
+    startCommand: 'php backend/public/ws-server.php'
