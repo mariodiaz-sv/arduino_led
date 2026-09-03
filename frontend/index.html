@@ -1,102 +1,604 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Control LED - Sistema Arduino + Web</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-rel="stylesheet" />
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+>
+
+<title>
+Control de 2 LEDs - ESP32
+</title>
+
+
+<link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+>
+
+
+<style>
+
+body {
+    background: #f4f6f9;
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+}
+
+.led-indicator {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin: 15px auto;
+    background: #343a40;
+    transition: all .3s ease;
+}
+
+.led-on {
+    background: #00ff3c;
+
+    box-shadow:
+        0 0 10px #00ff3c,
+        0 0 25px #00ff3c,
+        0 0 50px #00ff3c;
+}
+
+.led-off {
+    background: #343a40;
+    box-shadow: none;
+}
+
+</style>
+
 </head>
 
-<body class="bg-light">
+
+<body>
+
 <div class="container py-5">
-<h1 class="mb-4">Control de LED - Sistema Arduino ESP + Web</h1>
-<div class="card p-4 shadow-sm bg-white">
-<h4>Estado del LED: <span id="led-status" class="fw-bold">Desconocido</span></h4>
-<div class="mt-3">
-<button id="btn-encender" class="btn btn-success me-2" disabled>Encender</button>
-<button id="btn-apagar" class="btn btn-danger" disabled>Apagar</button>
-</div>
-</div>
+
+<div class="row justify-content-center">
+
+<div class="col-md-8">
+
+
+<div class="card p-4 shadow">
+
+<h1 class="text-center mb-4">
+Control de LEDs ESP32
+</h1>
+
+
+<!-- ============================================= -->
+<!-- LED 1 -->
+<!-- ============================================= -->
+
+<div class="card bg-light p-3 mb-3">
+
+<h4 class="text-center">
+LED 1 — GPIO 18
+</h4>
+
+
+<div
+    id="led1-indicator"
+    class="led-indicator led-off">
 </div>
 
+
+<h5 class="text-center">
+Estado:
+<span
+    id="led1-status"
+    class="fw-bold">
+Desconocido
+</span>
+</h5>
+
+
+<div class="text-center mt-3">
+
+<button
+    id="btn-led1-on"
+    class="btn btn-success me-2"
+    disabled>
+
+🟢 Encender
+
+</button>
+
+
+<button
+    id="btn-led1-off"
+    class="btn btn-danger"
+    disabled>
+
+🔴 Apagar
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ============================================= -->
+<!-- LED 2 -->
+<!-- ============================================= -->
+
+<div class="card bg-light p-3 mb-3">
+
+<h4 class="text-center">
+LED 2 — GPIO 19
+</h4>
+
+
+<div
+    id="led2-indicator"
+    class="led-indicator led-off">
+</div>
+
+
+<h5 class="text-center">
+Estado:
+<span
+    id="led2-status"
+    class="fw-bold">
+Desconocido
+</span>
+</h5>
+
+
+<div class="text-center mt-3">
+
+<button
+    id="btn-led2-on"
+    class="btn btn-success me-2"
+    disabled>
+
+🟢 Encender
+
+</button>
+
+
+<button
+    id="btn-led2-off"
+    class="btn btn-danger"
+    disabled>
+
+🔴 Apagar
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ============================================= -->
+<!-- CONEXION -->
+<!-- ============================================= -->
+
+<div
+    id="connection-status"
+    class="alert alert-warning text-center">
+
+Conectando...
+
+</div>
+
+
+</div>
+
+</div>
+
+</div>
+
+
 <script>
-//const wsUrl = 'ws://localhost:8080'; // Cambia según tu entorno
-//const wsUrl = 'wss://TU-URL-REAL.onrender.com';
-const wsUrl = 'wss://sistema-websocket.onrender.com';
+
+
+// =====================================================
+// WEBSOCKET
+// =====================================================
+
+const wsUrl =
+    'wss://sistema-websocket.onrender.com';
 
 
 let ws;
 
-const ledStatusEl = document.getElementById('led-status');
-const btnEncender = document.getElementById('btn-encender');
-const btnApagar = document.getElementById('btn-apagar');
 
-function conectarWebSocket() {
-ws = new WebSocket(wsUrl);
+// =====================================================
+// ELEMENTOS LED 1
+// =====================================================
 
-ws.onopen = () => {
-console.log('Conectado al WebSocket');
-// botones se habilitan sólo cuando se recibe estado
-};
+const led1Status =
+    document.getElementById('led1-status');
 
-ws.onmessage = (event) => {
+const led1Indicator =
+    document.getElementById('led1-indicator');
 
-const data = JSON.parse(event.data);
-if (data.type === 'status') {
-actualizarEstadoLed(data.led);
+const btnLed1On =
+    document.getElementById('btn-led1-on');
+
+const btnLed1Off =
+    document.getElementById('btn-led1-off');
+
+
+// =====================================================
+// ELEMENTOS LED 2
+// =====================================================
+
+const led2Status =
+    document.getElementById('led2-status');
+
+const led2Indicator =
+    document.getElementById('led2-indicator');
+
+const btnLed2On =
+    document.getElementById('btn-led2-on');
+
+const btnLed2Off =
+    document.getElementById('btn-led2-off');
+
+
+const connectionStatus =
+    document.getElementById('connection-status');
+
+
+// =====================================================
+// DESHABILITAR
+// =====================================================
+
+function deshabilitarBotones()
+{
+    btnLed1On.disabled = true;
+    btnLed1Off.disabled = true;
+
+    btnLed2On.disabled = true;
+    btnLed2Off.disabled = true;
 }
-};
 
-ws.onclose = () => {
-console.log('Conexión WebSocket cerrada');
-ledStatusEl.textContent = 'Desconectado';
-deshabilitarBotones();
-// Intentar reconectar después de 5 segundos
-setTimeout(conectarWebSocket, 5000);
-};
 
-ws.onerror = (error) => {
-console.error('Error WebSocket:', error);
-};
+// =====================================================
+// LED 1
+// =====================================================
+
+function actualizarLed1(estado)
+{
+
+    led1Status.textContent =
+        estado;
+
+
+    if (estado === 'ON')
+    {
+        led1Status.className =
+            'fw-bold text-success';
+
+        led1Indicator.className =
+            'led-indicator led-on';
+
+        btnLed1On.disabled = true;
+        btnLed1Off.disabled = false;
+    }
+
+    else
+    {
+        led1Status.className =
+            'fw-bold text-danger';
+
+        led1Indicator.className =
+            'led-indicator led-off';
+
+        btnLed1On.disabled = false;
+        btnLed1Off.disabled = true;
+    }
 }
 
-function actualizarEstadoLed(estado) {
-ledStatusEl.textContent = estado;
-if (estado === 'ON') {
-btnEncender.disabled = true;
-btnApagar.disabled = false;
-} else if (estado === 'OFF') {
-btnEncender.disabled = false;
-btnApagar.disabled = true;
-} else {
-deshabilitarBotones();
+
+// =====================================================
+// LED 2
+// =====================================================
+
+function actualizarLed2(estado)
+{
+
+    led2Status.textContent =
+        estado;
+
+
+    if (estado === 'ON')
+    {
+        led2Status.className =
+            'fw-bold text-success';
+
+        led2Indicator.className =
+            'led-indicator led-on';
+
+        btnLed2On.disabled = true;
+        btnLed2Off.disabled = false;
+    }
+
+    else
+    {
+        led2Status.className =
+            'fw-bold text-danger';
+
+        led2Indicator.className =
+            'led-indicator led-off';
+
+        btnLed2On.disabled = false;
+        btnLed2Off.disabled = true;
+    }
+}
+
+
+// =====================================================
+// CONECTAR
+// =====================================================
+
+function conectarWebSocket()
+{
+
+    console.log(
+        '[WS] Conectando...'
+    );
+
+
+    deshabilitarBotones();
+
+
+    connectionStatus.textContent =
+        'Conectando al servidor...';
+
+    connectionStatus.className =
+        'alert alert-warning text-center';
+
+
+    ws =
+        new WebSocket(wsUrl);
+
+
+    // =================================================
+    // OPEN
+    // =================================================
+
+    ws.onopen = function()
+    {
+
+        console.log(
+            '[WS] ✅ Conectado'
+        );
+
+
+        connectionStatus.textContent =
+            '🟢 Conectado al servidor';
+
+        connectionStatus.className =
+            'alert alert-success text-center';
+    };
+
+
+    // =================================================
+    // MESSAGE
+    // =================================================
+
+    ws.onmessage = function(event)
+    {
+
+        console.log(
+            '[WS] RX:',
+            event.data
+        );
+
+
+        try
+        {
+
+            const data =
+                JSON.parse(event.data);
+
+
+            if (data.type === 'status')
+            {
+
+                actualizarLed1(
+                    data.led1
+                );
+
+
+                actualizarLed2(
+                    data.led2
+                );
+
+            }
+
+        }
+
+        catch(error)
+        {
+
+            console.error(
+                '[JSON] Error:',
+                error
+            );
+
+        }
+    };
+
+
+    // =================================================
+    // CLOSE
+    // =================================================
+
+    ws.onclose = function()
+    {
+
+        console.log(
+            '[WS] ❌ Desconectado'
+        );
+
+
+        connectionStatus.textContent =
+            '🔴 Desconectado. Reconectando...';
+
+        connectionStatus.className =
+            'alert alert-danger text-center';
+
+
+        deshabilitarBotones();
+
+
+        setTimeout(
+            conectarWebSocket,
+            5000
+        );
+
+    };
+
+
+    // =================================================
+    // ERROR
+    // =================================================
+
+    ws.onerror = function(error)
+    {
+
+        console.error(
+            '[WS] Error:',
+            error
+        );
+
+    };
 
 }
-}
 
-function deshabilitarBotones() {
-btnEncender.disabled = true;
-btnApagar.disabled = true;
-}
 
-btnEncender.addEventListener('click', () => {
-if (ws && ws.readyState === WebSocket.OPEN) {
-ws.send(JSON.stringify({ command: 'toggle' }));
-}
-});
+// =====================================================
+// LED 1 ON
+// =====================================================
 
-btnApagar.addEventListener('click', () => {
-if (ws && ws.readyState === WebSocket.OPEN) {
-ws.send(JSON.stringify({ command: 'toggle' }));
-}
-});
+btnLed1On.addEventListener(
+    'click',
+    function()
+    {
 
-// Iniciar conexión al cargar página
+        if (
+            ws &&
+            ws.readyState === WebSocket.OPEN
+        )
+        {
+
+            ws.send(
+                JSON.stringify({
+                    command: 'led1_on'
+                })
+            );
+
+        }
+
+    }
+);
+
+
+// =====================================================
+// LED 1 OFF
+// =====================================================
+
+btnLed1Off.addEventListener(
+    'click',
+    function()
+    {
+
+        if (
+            ws &&
+            ws.readyState === WebSocket.OPEN
+        )
+        {
+
+            ws.send(
+                JSON.stringify({
+                    command: 'led1_off'
+                })
+            );
+
+        }
+
+    }
+);
+
+
+// =====================================================
+// LED 2 ON
+// =====================================================
+
+btnLed2On.addEventListener(
+    'click',
+    function()
+    {
+
+        if (
+            ws &&
+            ws.readyState === WebSocket.OPEN
+        )
+        {
+
+            ws.send(
+                JSON.stringify({
+                    command: 'led2_on'
+                })
+            );
+
+        }
+
+    }
+);
+
+
+// =====================================================
+// LED 2 OFF
+// =====================================================
+
+btnLed2Off.addEventListener(
+    'click',
+    function()
+    {
+
+        if (
+            ws &&
+            ws.readyState === WebSocket.OPEN
+        )
+        {
+
+            ws.send(
+                JSON.stringify({
+                    command: 'led2_off'
+                })
+            );
+
+        }
+
+    }
+);
+
+
+// =====================================================
+// INICIAR
+// =====================================================
+
 conectarWebSocket();
+
 </script>
 
-<script
-src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
