@@ -27,4 +27,4 @@ COPY backend ./backend
 WORKDIR /app/backend
 
 # Render proporciona PORT
-CMD ["sh", "-c", "php -S 0.0.0.0:${PORT} -t public"]
+CMD ["sh", "-c", "php public/ws-server.php"]

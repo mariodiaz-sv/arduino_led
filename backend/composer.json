@@ -1,4 +1,11 @@
 {
+    "name": "mario/backend",
+    "authors": [
+        {
+            "name": "Mario Diaz",
+            "email": "mmdiazl@yahoo.es"
+        }
+    ],
     "require": {
         "cboden/ratchet": "^0.4.4"
     }

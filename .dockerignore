@@ -1,0 +1,14 @@
+.git
+.github
+.gitignore
+
+backend/vendor
+backend/database/db.sqlite
+
+frontend
+arduino
+
+*.docx
+*.log
+.env
+.env.*

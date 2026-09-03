@@ -1,0 +1,13 @@
+# Dependencias de Composer
+backend/vendor/
+
+# Variables de entorno
+.env
+.env.*
+
+# Base de datos local
+# Descomenta si NO quieres versionar SQLite:
+# *.sqlite
+
+# Archivos del sistema
+.DS_Store
