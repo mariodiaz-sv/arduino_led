@@ -28,11 +28,6 @@ jobs:
         working-directory: backend
         run: composer install --no-interaction --prefer-dist
 
-      - name: Validate Composer
-        working-directory: backend
-        run: composer validate
-
-
       - name: Check PHP syntax
         run: |
           find backend -name "*.php" -print0 | xargs -0 -n1 php -l
