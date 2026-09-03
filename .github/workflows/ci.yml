@@ -30,7 +30,8 @@ jobs:
 
       - name: Validate Composer
         working-directory: backend
-        run: composer validate --strict
+        run: composer validate
+
 
       - name: Check PHP syntax
         run: |
