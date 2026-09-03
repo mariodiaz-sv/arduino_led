@@ -11,3 +11,4 @@ backend/vendor/
 
 # Archivos del sistema
 .DS_Store
+*.docx
