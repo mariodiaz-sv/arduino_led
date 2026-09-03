@@ -1,7 +1,6 @@
 services:
   - type: web
     name: sistema-backend-php
-    env: php
+    env: docker
     plan: free
-    buildCommand: cd backend && composer install --no-dev --optimize-autoloader
-    startCommand: cd backend && php -S 0.0.0.0:$PORT -t public
+    dockerfilePath: ./Dockerfile
