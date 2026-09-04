@@ -1,4 +1,4 @@
-# ⚡ ESP32 LED Control System
+# ⚡ ESP32 Websocket IoT Control Platform V1.0
 
 [![Platform](https://img.shields.io/badge/Platform-ESP32-E7352C?logo=espressif)](https://www.espressif.com/)
 [![Language](https://img.shields.io/badge/Arduino-C%2B%2B-00979D?logo=arduino)](https://www.arduino.cc/)
@@ -7,25 +7,12 @@
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker)](https://www.docker.com/)
 [![Deployment](https://img.shields.io/badge/Deployment-Render-46E3B7)](https://render.com/)
 
-Sistema IoT educativo y demostrativo para controlar **dos LEDs conectados a un ESP32 mediante una interfaz web en tiempo real**.
+Sistema IoT educativo y demostrativo para controlar **Luminarias y equipos conectados a un ESP32 mediante una interfaz web en tiempo real**.
 
-El proyecto integra electrónica, programación embebida, comunicación WebSocket, backend PHP, autenticación básica, Docker y despliegue en la nube. La arquitectura separa el dispositivo físico, el servidor de comunicación y la interfaz web.
+El proyecto integra electrónica, programación embebida, comunicación WebSocket, backend PHP, Docker y despliegue en la nube. La arquitectura separa el dispositivo físico, el servidor de comunicación y la interfaz web.
 
 > **Estado:** funcional / proyecto educativo y de demostración.
-
----
-
-## 📸 Vista general
-
-> Coloca aquí las imágenes generadas con Nano Banana:
->
-> - `docs/images/hero.png` — imagen principal del proyecto.
-> - `docs/images/architecture.png` — arquitectura completa.
-> - `docs/images/circuit.png` — conexión ESP32 + LEDs.
-> - `docs/images/interface.png` — interfaz web.
-
-![ESP32 LED Control System](docs/images/hero.png)
-
+https://sistema-frontend-zc93.onrender.com
 ---
 
 ## 🎯 Objetivo
@@ -62,17 +49,14 @@ El flujo principal es:
 
 ## ✨ Características
 
-- Control remoto de dos LEDs.
+- Control remoto de dos Luminarias.
 - Comunicación bidireccional en tiempo real.
 - WebSocket seguro mediante `wss://`.
 - ESP32 conectado por Wi-Fi.
-- Indicadores visuales del estado de cada LED.
+- Indicadores visuales del estado de cada Luminaria.
 - Reconexión automática del navegador si se pierde WebSocket.
 - Servidor WebSocket desarrollado en PHP con Ratchet.
-- Backend PHP con estructura separada de controladores, modelos, rutas y configuración.
-- Autenticación básica con usuario y contraseña.
-- Contraseñas almacenadas mediante `password_hash()`.
-- Base de datos SQLite.
+- Backend PHP (API) con estructura separada de controladores, modelos, rutas y configuración.
 - Contenedores Docker independientes para HTTP y WebSocket.
 - Configuración de despliegue para Render.
 - Código pensado para aprendizaje de IoT, redes, backend y DevOps.
@@ -212,7 +196,7 @@ const int led2Pin = 19;
 
 ## 🏗️ Arquitectura
 
-![Arquitectura del sistema](docs/images/architecture.png)
+![Arquitectura](https://i.postimg.cc/65rp3sdp/arquitecturaesp32.jpg)
 
 ### Componentes principales
 
@@ -318,7 +302,7 @@ arduino_led/
 ## 🔐 Autenticación
 
 El backend incluye una implementación básica de autenticación.
-
+NOTA: EN ESTA VERSION 1.0 NO EXISTE PANTALLA DE LOGIN NI DASHBOARD PARA LA ADMINISTRACION. ESTO ESTA SOLO COMO EJEMPLO
 ### Login
 
 ```http
@@ -386,8 +370,8 @@ Instala:
 ### Clonar
 
 ```bash
-git clone https://github.com/mariodiaz-sv/arduino_led.git
-cd arduino_led
+git clone https://github.com/mariodiaz-sv/esp32-iot-control-platform-v1.0.git
+cd esp32-iot-control-platform-v1.0
 ```
 
 ---
@@ -774,6 +758,9 @@ Esto convierte al proyecto en un ejemplo interesante para estudiar qué ocurre d
 
 Las contribuciones son bienvenidas.
 
+Pero antes de hacer un contribución debes avisar a: mmdiazl@yahoo.es
+Indicando los cambios a realizar.
+
 Puedes:
 
 1. Crear un fork.
@@ -807,10 +794,17 @@ https://github.com/mariodiaz-sv
 
 Repositorio:
 
-https://github.com/mariodiaz-sv/arduino_led
+https://github.com/mariodiaz-sv/esp32-iot-control-platform-v1.0
 
 ---
 
+## 📸 Vista general
+
+![Arquitectura](https://i.postimg.cc/65rp3sdp/arquitecturaesp32.jpg)
+![Circuito](https://i.postimg.cc/Yq6C9c1S/circuito-esp32.jpg)
+![Contexto](https://i.postimg.cc/kXQg4rx4/contexto-esp32.jpg)
+
+---
 ## 📄 Licencia
 
 Consulta la licencia incluida en el repositorio antes de reutilizar o redistribuir el proyecto.
